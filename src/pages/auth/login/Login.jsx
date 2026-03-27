@@ -14,7 +14,7 @@ const Login = () => {
         const res=await axios.post(`${import.meta.env.VITE_BASE_URL}/api/auth/login`,{email,password});
         console.log(res.data);
         localStorage.setItem("token",res.data.token);
-        // navigate("/")
+        window.location.href = "/";
         } catch (error) {
             console.log(error);
             alert(error.response?.data?.message || "Xəta baş verdi. Backendin işlədiyinə əmin olun.");
