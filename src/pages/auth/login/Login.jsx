@@ -1,29 +1,41 @@
 import React from 'react'
 import { useState } from 'react'
 // import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { loginUser } from '../../../redux/features/authSlice';
+import Input from '../../../components/input/Input';
+import { Card } from 'antd';
+import { useToast } from 'arzu-toast-modal';
 
 const Login = () => {
-    const [email,setEmail]=useState();
-    const [password,setPassword]=useState();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     // const [navigate]=useNavigate()
+    const { showToast } = useToast();
 
-    const handleSubmit=async(e)=>{
+    const dispatch = useDispatch();
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        try {
-        const res=await axios.post(`${import.meta.env.VITE_BASE_URL}/api/auth/login`,{email,password});
-        console.log(res.data);
-        localStorage.setItem("token",res.data.token);
-        window.location.href = "/";
-        } catch (error) {
-            console.log(error);
-            alert(error.response?.data?.message || "Xəta baş verdi. Backendin işlədiyinə əmin olun.");
+
+        const actionResult = await dispatch(loginUser({ email, password }));
+
+        if (loginUser.fulfilled.match(actionResult)) {
+            navigate('/');
+        } else if (loginUser.rejected.match(actionResult)) {
+                 showToast({
+            type: 'error',
+            title: 'Error!',
+            message: `${actionResult.payload || 'Login zamanı xəta baş verdi'}`,
+            duration: 4000,
+            position: 'top-right',
+          })
         }
-    }
+    };
 
     return (
-        <div className='mx-auto min-h-screen '>
-            <div className="">
+        <div className='mx-auto min-h-screen flex items-center justify-center   '>
+            <Card className='w-[500px]   mx-auto mt-20 p-10 rounded-3xl shadow-lg '>
                 <div className="">
                     <img src="" alt="" />
                 </div>
@@ -31,15 +43,19 @@ const Login = () => {
                 <form action="" onSubmit={handleSubmit}>
                     <div className="">
                         <label htmlFor="">Email</label>
-                        <input type="email" value={email} onChange={(e)=>setEmail(e.target.value)} />
+                        <Input type="email" placeholder='Email' onChange={(e) => setEmail(e.target.value)} />
                     </div>
                     <div className="">
                         <label htmlFor="">Password</label>
-                        <input type="password"  value={password} onChange={(e)=>setPassword(e.target.value)}/>
+                        <Input type="password" placeholder='Password' onChange={(e) => setPassword(e.target.value)} />
                     </div>
                     <button type="submit">Login</button>
+
+
                 </form>
-            </div>
+
+            </Card>
+
 
         </div>
     )
