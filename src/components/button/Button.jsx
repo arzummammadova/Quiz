@@ -4,8 +4,8 @@ import { Button as AntdButton } from 'antd';
 const Button = ({ children, type = "primary", htmlType = "submit", ...props }) => {
   return (
     <AntdButton 
-      type={type} 
-      htmlType={htmlType} 
+      type={type}
+      htmlType={htmlType}
       size="large" 
       block 
       {...props}
