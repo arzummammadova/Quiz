@@ -1,9 +1,19 @@
-import React from 'react'
+import React from 'react';
+import { Button as AntdButton } from 'antd';
 
-const Button = () => {
+const Button = ({ children, type = "primary", htmlType = "submit", ...props }) => {
   return (
-    <div>Button</div>
-  )
-}
+    <AntdButton 
+      type={type} 
+      htmlType={htmlType} 
+      size="large" 
+      block 
+      {...props}
+    >
+      {children}
+    </AntdButton>
+  );
+};
 
-export default Button
+export default Button;
+

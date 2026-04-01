@@ -19,6 +19,18 @@ export const registerUser = createAsyncThunk(
   }
 );
 
+
+export const loginUser=createAsyncThunk('/auth/login',async(data,{rejectWithValue})=>{
+    try {
+        const res=await axios.post(`${import.meta.env.VITE_BASE_URL}/api/auth/login`,data)
+        localStorage.setItem("token",res.data.token)
+        return res.data
+    } catch (error) {
+        return rejectWithValue(error.response?.data?.message || "xeta bas verdi ")
+        
+    }
+})
+
 export const logoutUser=createAsyncThunk('/auth/logout',
     async (data,{rejectWithValue}) => {
         try {
@@ -33,21 +45,37 @@ export const logoutUser=createAsyncThunk('/auth/logout',
 
 )
 
-export const loginUser=createAsyncThunk('/auth/login',
-  async (data, {rejectWithValue}) => {
-   try {
-    const res=await axios.post(`${import.meta.env.VITE_BASE_URL}/api/auth/login`,data)
-    localStorage.setItem("token",res.data.token)
-    return res.data;
+// export const loginUser=createAsyncThunk('/auth/login',
+//   async (data, {rejectWithValue}) => {
+//    try {
+//     const res=await axios.post(`${import.meta.env.VITE_BASE_URL}/api/auth/login`,data)
+//     localStorage.setItem("token",res.data.token)
+//     return res.data;
     
 
-   } catch (error) {
-    return rejectWithValue(error.response?.data?.message || 'Xəta baş verdi') 
+//    } catch (error) {
+//     return rejectWithValue(error.response?.data?.message || 'Xəta baş verdi') 
     
-   }
-  }
+//    }
+//   }
 
-)
+// )
+
+// export const loginUser=createAsyncThunk('/auth/login',
+//   async (data, {rejectWithValue}) => {
+//    try {
+//     const res=await axios.post(`${import.meta.env.VITE_BASE_URL}/api/auth/login`,data)
+//     localStorage.setItem("token",res.data.token)
+//     return res.data;
+    
+
+//    } catch (error) {
+//     return rejectWithValue(error.response?.data?.message || 'Xəta baş verdi') 
+    
+//    }
+//   }
+
+// )
 
 export const Me=createAsyncThunk('/auth/me',async(data,{rejectWithValue})=>{
   try {
@@ -58,6 +86,9 @@ export const Me=createAsyncThunk('/auth/me',async(data,{rejectWithValue})=>{
     
   }
 })
+
+
+
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -106,18 +137,6 @@ export const authSlice = createSlice({
         state.user = null;
         state.error = action.payload;
         localStorage.removeItem('token');
-      })
-      .addCase(loginUser.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-      })
-      .addCase(loginUser.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.user = action.payload.user;
-      })
-      .addCase(loginUser.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload;
       })
   },
 });
