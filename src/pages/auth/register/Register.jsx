@@ -21,7 +21,16 @@ const Register = () => {
         const actionResult = await dispatch(registerUser({ username, email, password }));
 
         if (registerUser.fulfilled.match(actionResult)) {
-            navigate('/login');
+            showToast({
+                type: 'success',
+                title: 'Uğurlu!',
+                message: 'Qeydiyyat uğurludur! Zəhmət olmasa emailinizi təsdiqləyin.',
+                duration: 4000,
+                position: 'top-right',
+            });
+            setUsername('');
+            setEmail('');
+            setPassword('');
         } else if (registerUser.rejected.match(actionResult)) {
             showToast({
                 type: 'error',
