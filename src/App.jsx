@@ -7,27 +7,29 @@ import Register from './pages/auth/register/Register'
 import NotFound from './pages/notfound/NotFound'
 import Layout from './pages/layout/Layout/Layout'
 import OvewViewPage from './pages/overview/OvewViewPage'
+import VerifyEmail from './pages/verify-email/VerifyEmail'
 
 function App() {
 
   return (
     <>
-    <Routes>
+      <Routes>
 
-      <Route path="/" element={<Layout/>}>
-        <Route index element={<OvewViewPage/>}/>
-      </Route>
-       <Route path='/login' element={<Login/>}/>  
-      <Route path='/register' element={<Register/>}/>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<OvewViewPage />} />
+        </Route>
+        <Route path='/login' element={<Login />} />
+        <Route path='/register' element={<Register />} />
+        <Route path='/verify-email' element={<VerifyEmail />}  />
 
 
-   
 
-      <Route path="*" element={<NotFound/>}/>
 
-    
+        <Route path="*" element={<NotFound />} />
 
-    </Routes>
+
+
+      </Routes>
     </>
   )
 }
