@@ -1,9 +1,22 @@
-import React from 'react'
+import React from 'react';
+import { Box } from '@mui/material';
+import logoImg from '../../assets/logo.png';
 
 const Logo = () => {
   return (
-    <div>Logo</div>
-  )
-}
+    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <img 
+        src={logoImg} 
+        alt="Logo" 
+        style={{ 
+          width: '100%', 
+          maxWidth: '100px',
+          height: 'auto',
+          display: 'block' 
+        }} 
+      />
+    </Box>
+  );
+};
 
-export default Logo
+export default Logo;
