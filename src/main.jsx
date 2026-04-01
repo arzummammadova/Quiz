@@ -4,12 +4,17 @@ import App from './App.jsx'
 import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import { store } from './redux/store/store.js'
+import { ToastProvider } from 'arzu-toast-modal'
 
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
-    <Provider store={store} >
 
-    <App />
-  </Provider>
+    <Provider store={store} >
+      <ToastProvider>
+        <App />
+
+      </ToastProvider>
+
+    </Provider>
   </BrowserRouter >
 )
