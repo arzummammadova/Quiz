@@ -4,14 +4,15 @@ import { useState } from 'react'
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { loginUser } from '../../../redux/features/authSlice';
+import { Button, Card, Input } from 'antd';
 
 const Login = () => {
-    const [email,setEmail]=useState();
-    const [password,setPassword]=useState();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     // const [navigate]=useNavigate()
     const dispatch=useDispatch();
 
-    const handleSubmit=async(e)=>{
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const actionResult=await dispatch(loginUser({email,password}))
         if(loginUser.fulfilled.match(actionResult)){
@@ -37,27 +38,38 @@ const Login = () => {
     // }
 
     return (
-        <div className='mx-auto min-h-screen '>
-            <div className="">
-                <div className="">
-                    <img src="" alt="" />
-                </div>
+        <div className='mx-auto min-h-screen flex items-center justify-center   '>
+            <Card className='w-[500px]   mx-auto mt-20 p-10 rounded-3xl shadow-lg '>
+                <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Login</h2>
 
-                <form action="" onSubmit={handleSubmit}>
-                    <div className="">
-                        <label htmlFor="">Email</label>
-                        <input type="email" value={email} onChange={(e)=>setEmail(e.target.value)} />
+                <form onSubmit={handleSubmit} className="w-full">
+                    <div className="mb-4">
+                        <label className="block mb-1 font-medium text-gray-700">Email</label>
+                        <Input
+                            type="email"
+                            placeholder='Email'
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
                     </div>
-                    <div className="">
-                        <label htmlFor="">Password</label>
-                        <input type="password"  value={password} onChange={(e)=>setPassword(e.target.value)}/>
+
+                    <div className="mb-6">
+                        <label className="block mb-1 font-medium text-gray-700">Password</label>
+                        <Input
+                            type="password"
+                            placeholder='Password'
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
                     </div>
-                    <button type="submit">Login</button>
+
+                    <div className="flex justify-center mt-8">
+                        <Button onClick={handleSubmit}> Login</Button>
+                    </div>
                 </form>
-            </div>
-
+            </Card>
         </div>
-    )
+    );
 }
 
 export default Login
