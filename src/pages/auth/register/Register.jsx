@@ -25,7 +25,7 @@ const Register = () => {
             alert(actionResult.payload || 'Qeydiyyat zamanı xəta baş verdi');
         }
     };
-
+    
     return (
         <div className="flex flex-col items-center justify-center min-h-screen">
             <h2 className="mb-4 text-2xl font-bold">Register</h2>
