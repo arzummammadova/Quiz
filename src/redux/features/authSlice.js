@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { data } from 'react-router-dom';
 
 const initialState = {
   user: null,
@@ -83,6 +84,18 @@ export const Me=createAsyncThunk('/auth/me',async(data,{rejectWithValue})=>{
     return res.data
   } catch (error) {
     return rejectWithValue(error.response?.data?.message || 'Xəta baş verdi') 
+    
+  }
+})
+export const updateProfile=createAsyncThunk('/auth/update',async(data,{rejectWithValue})=>{
+  try {
+    const res=await axios.put(`${import.meta.env.VITE_BASE_URL}/api/auth/update`,data,
+      {headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}}
+    )
+    return res.data
+    
+  } catch (error) {
+    return rejectWithValue(error?.response?.data?.message || 'xetta bas verdi')
     
   }
 })

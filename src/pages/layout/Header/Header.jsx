@@ -81,9 +81,11 @@ const Header = () => {
         
         {user ? (
           <>
+          <Link to="/profile">
             <Typography variant="body2" sx={{ textAlign: 'center', mb: 1, fontWeight: 500 }}>
               {user.username}
             </Typography>
+          </Link>
             <Button 
               variant="outlined" 
               color="error" 

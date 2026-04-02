@@ -5,18 +5,22 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { loginUser } from '../../../redux/features/authSlice';
 import { Button, Card, Input } from 'antd';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     // const [navigate]=useNavigate()
+    const navigate=useNavigate();
+    
     const dispatch=useDispatch();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const actionResult=await dispatch(loginUser({email,password}))
         if(loginUser.fulfilled.match(actionResult)){
-            alert("Login successful")
+            alert("Login successful");
+            navigate("/");
             setEmail("")
             setPassword("")
         }else if(loginUser.rejected.match(actionResult)){
