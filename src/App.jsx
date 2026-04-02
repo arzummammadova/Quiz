@@ -8,6 +8,7 @@ import NotFound from './pages/notfound/NotFound'
 import Layout from './pages/layout/Layout/Layout'
 import OvewViewPage from './pages/overview/OvewViewPage'
 import VerifyEmail from './pages/verify-email/VerifyEmail'
+import Profile from './pages/profile/Profile'
 
 function App() {
 
@@ -22,6 +23,8 @@ function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
         <Route path='/verify-email' element={<VerifyEmail />}  />
+
+        <Route path="/profile" element={<Profile/>}/>
 
 
 
