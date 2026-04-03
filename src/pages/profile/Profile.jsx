@@ -1,99 +1,117 @@
-import { Box } from '@mui/material'
-import { Button, Input, Avatar, Typography, Card } from 'antd' // Добавили Card и Typography для дизайна
+import { Button, Input } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Me, updateProfile } from '../../redux/features/authSlice'
-import { UserOutlined, ArrowLeftOutlined } from '@ant-design/icons'
-import { showToast } from 'arzu-toast-modal'
+import { Avatar, Flex } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
+import { useToast } from 'arzu-toast-modal'
 import { useNavigate } from 'react-router-dom'
+import { Card, Typography } from 'antd'
+import { ArrowLeftOutlined, EditOutlined } from '@ant-design/icons'
 
-const { Text, Title } = Typography;
+const { Title, Text } = Typography;
 
 const Profile = () => {
-    const dispatch = useDispatch();
-    const user = useSelector((state) => state.authReducer.user);
-    const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.authReducer.user);
+  const { isLoading } = useSelector((state) => state.authReducer);
+  const navigate = useNavigate();
+  const { showToast } = useToast();
 
-    const [username, setUserName] = useState("");
+  const [username, setUserName] = useState("");
 
-    // 1. Загружаем данные при входе
-    useEffect(() => {
-        dispatch(Me());
-    }, [dispatch]);
+  useEffect(() => {
+    dispatch(Me());
+  }, [dispatch]);
 
-    // 2. ИСПРАВЛЕНИЕ: Синхронизируем локальный стейт с данными из Redux
-    // Без этого инпут будет пустым, даже если юзер авторизован
-    useEffect(() => {
-        if (user?.username) {
-            setUserName(user.username);
-        }
-    }, [user]);
-
-    const handleUpdateUser = () => {
-        // ИСПРАВЛЕНИЕ: Убрали email, так как мы его не меняем (и стейта для него нет)
-        dispatch(updateProfile({ username }));
-        
-        // Обновляем данные в стейте
-        dispatch(Me());
-        
-        // Используем твой Toast вместо alert
-        showToast({
-            type: "success", // Обычно пишется с двумя 's'
-            title: "Success",
-            duration: 4000,
-            position: "top-right",
-            message: "Profile updated successfully"
-        });
+  useEffect(() => {
+    if (user) {
+      setUserName(user.username || "");
     }
-    
-    return (
-        // Внешний контейнер (предполагаем, что фон страницы черный)
-        <div className='min-h-screen flex flex-col items-center justify-center p-4 bg-black'>
-            
-            <Button 
-                icon={<ArrowLeftOutlined />} 
-                onClick={() => navigate(-1)}
-                style={{ marginBottom: '20px', color: 'white' }}
-                type="text"
-            >
-                Back
-            </Button>
+  }, [user]);
 
-            {/* ДИЗАЙН: Используем белую карточку Ant Design для контраста */}
-            <Card 
-                style={{ width: 450, borderRadius: '16px', textAlign: 'center' }}
-                bodyStyle={{ padding: '40px 30px' }}
-            >
-                <Avatar size={80} icon={<UserOutlined />} style={{ backgroundColor: '#1890ff', marginBottom: '16px' }} />
-                
-                <Title level={3}>Profile Settings</Title>
-                <Text type="secondary">Update your public information</Text>
+  const handleUpdateUser = async () => {
+    const actionResult = await dispatch(updateProfile({ username }));
 
-                <Box className="flex flex-col gap-6 mt-8">
-                    <div className='text-left'>
-                        <Text strong>Username</Text>
-                        <Input 
-                            size="large"
-                            placeholder="Enter your name" 
-                            value={username} 
-                            onChange={(e) => setUserName(e.target.value)}
-                            style={{ marginTop: '8px' }}
-                        />
-                    </div>
+    if (updateProfile.fulfilled.match(actionResult)) {
+      showToast({
+        type: 'success',
+        title: 'Success',
+        message: 'Profile updated successfully',
+        duration: 4000,
+        position: 'top-right',
+      });
+      dispatch(Me());
+    } else {
+      showToast({
+        type: 'error',
+        title: 'Error',
+        message: 'Failed to update profile',
+        duration: 4000,
+        position: 'top-right',
+      });
+    }
+  }
 
-                    <Button 
-                        type="primary" 
-                        size="large" 
-                        block 
-                        onClick={handleUpdateUser}
-                        style={{ height: '45px', borderRadius: '8px', fontWeight: 'bold' }}
-                    >
-                        Update profile
-                    </Button>
-                </Box>
-            </Card>
-        </div>
-    )
+  return (
+    <div className='mx-auto min-h-screen flex flex-col items-center justify-center p-4'>
+      <div className="w-full max-w-[450px] mb-4 flex justify-start">
+        <Button
+          type="text"
+          icon={<ArrowLeftOutlined />}
+          onClick={() => navigate(-1)}
+          className="text-white hover:!bg-white/10 hover:!text-white transition-all duration-300"
+          style={{ color: 'white' }}
+        >
+          Back
+        </Button>
+      </div>
+
+      <Card
+        className='w-full max-w-[450px] p-6 rounded-3xl shadow-2xl'
+        style={{
+          background: '#ffffff',
+          border: 'none'
+        }}
+      >
+        <Flex vertical gap="large" style={{ width: '100%' }}>
+          <div className="flex flex-col items-center">
+            <Avatar
+              size={84}
+              icon={<UserOutlined />}
+              className="bg-blue-500 mb-4 shadow-md"
+            />
+            <Title level={3} className="m-0 text-gray-800">User Profile</Title>
+            <Text type="secondary">Manage your account settings</Text>
+          </div>
+
+          <div className="w-full">
+            <label className="block mb-2 font-semibold text-gray-700">Username</label>
+            <Input
+              prefix={<EditOutlined className="text-gray-400" />}
+              size="large"
+              placeholder="Change your username"
+              value={username}
+              onChange={(e) => setUserName(e.target.value)}
+              className="rounded-lg border-gray-300 hover:border-blue-400 focus:border-blue-500"
+            />
+          </div>
+
+          <Button
+            type="primary"
+            size="large"
+            block
+            loading={isLoading}
+            onClick={handleUpdateUser}
+            className="h-12 rounded-xl font-bold bg-blue-600 hover:bg-blue-700 shadow-lg border-none"
+          >
+            {isLoading ? 'Updating...' : 'Update Profile'}
+          </Button>
+        </Flex>
+      </Card>
+    </div>
+  )
+
 }
 
 export default Profile
