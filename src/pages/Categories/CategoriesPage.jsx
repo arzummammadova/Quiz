@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const CategoriesPage = () => {
 
@@ -8,6 +8,7 @@ const CategoriesPage = () => {
     console.log(category);
 
     const [topics, setTopics] = useState([])
+    const navigate = useNavigate();
 
 
 
@@ -27,6 +28,13 @@ const CategoriesPage = () => {
     }, [])
 
 
+    const handleGetQuestion = ({ category, topic }) => {
+        navigate(`/quiz/questions?category=${category}&topic=${topic}`);
+       
+
+    }
+
+
 
     return (
         <div>
@@ -35,7 +43,7 @@ const CategoriesPage = () => {
             <div className='flex flex-wrap px-6 py-9 gap-4 justify-center'>
                 {
                     topics.map((topic) => (
-                        <div key={topic._id} className='w-[500px] p-10 rounded-3xl shadow-lg text-2xl font-bold  uppercase text-center cursor-pointer hover:scale-105 transition-all duration-300 hover:bg-blue-500 hover:text-white'>
+                        <div key={topic._id} onClick={() => { handleGetQuestion({ category, topic }) }} className='w-[500px] p-10 rounded-3xl shadow-lg text-2xl font-bold  uppercase text-center cursor-pointer hover:scale-105 transition-all duration-300 hover:bg-blue-500 hover:text-white'>
                             {topic}
                         </div>
                     ))
