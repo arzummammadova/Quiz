@@ -41,7 +41,7 @@ const Register = () => {
             });
         }
     };
-
+    
     return (
         <div className='mx-auto min-h-screen flex items-center justify-center'>
             <Card className='w-[500px] p-10 rounded-3xl shadow-lg'>
