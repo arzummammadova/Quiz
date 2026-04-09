@@ -9,6 +9,7 @@ import Layout from './pages/layout/Layout/Layout'
 import OvewViewPage from './pages/overview/OvewViewPage'
 import VerifyEmail from './pages/verify-email/VerifyEmail'
 import Profile from './pages/profile/Profile'
+import CategoriesPage from './pages/Categories/CategoriesPage'
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
 
         <Route path="/" element={<Layout />}>
           <Route index element={<OvewViewPage />} />
+          <Route path="/quiz/:category" element={<CategoriesPage />} />
         </Route>
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
