@@ -1,26 +1,13 @@
+import { Button, Input } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import { 
-  Button, 
-  Input, 
-  Avatar, 
-  Flex, 
-  Card, 
-  Typography 
-} from 'antd'
-import { 
-  ArrowLeftOutlined, 
-  EditOutlined, 
-  FacebookOutlined, 
-  InstagramOutlined, 
-  GithubOutlined, 
-  LockOutlined,
-  UserOutlined,
-  MailOutlined
-} from '@ant-design/icons'
 import { Me, updateProfile } from '../../redux/features/authSlice'
+import { Avatar, Flex } from 'antd';
+import { FacebookOutlined, InstagramOutlined, UserOutlined } from '@ant-design/icons';
 import { useToast } from 'arzu-toast-modal'
+import { useNavigate } from 'react-router-dom'
+import { Card, Typography } from 'antd'
+import { ArrowLeftOutlined, EditOutlined } from '@ant-design/icons'
 
 const { Title, Text } = Typography;
 
@@ -33,12 +20,10 @@ const Profile = () => {
 
   const [username, setUserName] = useState("");
   const [bio, setBio] = useState("");
-  const [password, setPassword] = useState("");
-  const [socialLinks, setSocialLinks] = useState({
+  const [sosialLinks, setSosialLinks] = useState({
     facebook: "",
-    instagram: "",
-    github: ""
-  });
+    instagram: ""
+  })
 
 
   useEffect(() => {
@@ -48,43 +33,27 @@ const Profile = () => {
   useEffect(() => {
     if (user) {
       setUserName(user.username || "");
-      setBio(user.bio || "");
-      setSocialLinks({
-        facebook: user.socialLinks?.facebook || "",
-        instagram: user.socialLinks?.instagram || "",
-        github: user.socialLinks?.github || ""
-      });
+      setBio(user.bio || "")
     }
   }, [user]);
 
   const handleUpdateUser = async () => {
-    const data = {
-      username,
-      bio,
-      socialLinks
-    };
-    
-    if (password) {
-      data.password = password;
-    }
-
-    const actionResult = await dispatch(updateProfile(data));
+    const actionResult = await dispatch(updateProfile({ username, bio }));
 
     if (updateProfile.fulfilled.match(actionResult)) {
       showToast({
         type: 'success',
-        title: 'Uğurlu',
-        message: 'Profil məlumatları yeniləndi',
+        title: 'Success',
+        message: 'Profile updated successfully',
         duration: 4000,
         position: 'top-right',
       });
-      setPassword(""); // Clear password field after update
       dispatch(Me());
     } else {
       showToast({
         type: 'error',
-        title: 'Xəta',
-        message: actionResult.payload || 'Yenilənmə zamanı xəta baş verdi',
+        title: 'Error',
+        message: 'Failed to update profile',
         duration: 4000,
         position: 'top-right',
       });
@@ -119,90 +88,63 @@ const Profile = () => {
               icon={<UserOutlined />}
               className="bg-blue-500 mb-4 shadow-md"
             />
-            <Title level={3} className="m-0 text-gray-800">Profil Məlumatları</Title>
+            {/* <Title level={3} className="m-0 text-gray-800">{user.username}Profile</Title> */}
             <Text type="secondary">Manage your account settings</Text>
           </div>
 
-          <div className="w-full flex flex-col gap-4">
-            <div>
-              <label className="block mb-1 text-sm font-semibold text-gray-700">Email</label>
-              <Input 
-                size="large"
-                prefix={<MailOutlined className="text-gray-400" />}
-                value={user?.email}
-                disabled
-                className='rounded-lg bg-gray-50'
-              />
-            </div>
+          <div className="w-full">
 
-            <div>
-              <label className="block mb-1 text-sm font-semibold text-gray-700">İstifadəçi adı</label>
+            <label className="block mb-2 font-semibold text-gray-700">Email</label>
+            <Input
+              size="large"
+              value={user?.email}
+              disabled
+              className='rounded-lg border-gray-300 hover:border-blue-400 focus:border-blue-500'
+            />
+            <label className="block mb-2 font-semibold text-gray-700">Username</label>
+            <Input
+              prefix={<EditOutlined className="text-gray-400" />}
+              size="large"
+              placeholder="Change your username"
+              value={username}
+              onChange={(e) => setUserName(e.target.value)}
+              className="rounded-lg border-gray-300 hover:border-blue-400 focus:border-blue-500"
+            />
+
+            <label className=''>Bio</label>
+            <Input
+              size="large"
+              placeholder='Your bio'
+              value={bio}
+              onChange={(e) => setBio(e.target.value)}
+
+
+            />
+
+            <label>Sosial Links</label>
+            <div className="flex flex-col gap-4  py-2 ">
               <Input
-                prefix={<EditOutlined className="text-gray-400" />}
-                size="large"
-                placeholder="İstifadəçi adını dəyiş"
-                value={username}
-                onChange={(e) => setUserName(e.target.value)}
-                className="rounded-lg border-gray-300 hover:border-blue-400 focus:border-blue-500"
+              prefix={<InstagramOutlined className="text-gray-400" />}
+              size='large'
+              placeholder='Instagram'
+              onChange={(e)=>(setSosialLinks({...sosialLinks,instagram:e.target.value}))}
+              value={sosialLinks.instagram}
+              className='rounded-lg border-gray-300 hover:border-blue-400 focus:border-blue-500'
+              />
+
+              <Input prefix={<FacebookOutlined className="text-gray-400" />}
+              size='large'
+              placeholder='Facebook'
+
+              onChange={(e)=>(setSosialLinks({...sosialLinks,facebook:e.target.value}))}
+              value={sosialLinks.facebook}
+              className='rounded-lg border-gray-300 hover:border-blue-400 focus:border-blue-5000'
+
+           
               />
             </div>
 
-            <div>
-              <label className="block mb-1 text-sm font-semibold text-gray-700">Yeni Şifrə (məcburi deyil)</label>
-              <Input.Password
-                prefix={<LockOutlined className="text-gray-400" />}
-                size="large"
-                placeholder="Yeni şifrə daxil edin"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="rounded-lg border-gray-300 hover:border-blue-400 focus:border-blue-500"
-              />
-            </div>
 
-            <div>
-              <label className="block mb-1 text-sm font-semibold text-gray-700">Bio</label>
-              <Input.TextArea
-                size="large"
-                placeholder='Haqqınızda məlumat'
-                value={bio}
-                onChange={(e) => setBio(e.target.value)}
-                rows={3}
-                className="rounded-lg border-gray-300 hover:border-blue-400 focus:border-blue-500"
-              />
-            </div>
-
-            <div className="border-t pt-4 mt-2">
-              <Title level={5} className="mb-3 text-gray-700">Sosial Linklər</Title>
-              <Flex vertical gap="middle">
-                <div>
-                  <Input
-                    prefix={<FacebookOutlined className="text-[#1877F2]" />}
-                    placeholder="Facebook link"
-                    value={socialLinks.facebook}
-                    onChange={(e) => setSocialLinks({ ...socialLinks, facebook: e.target.value })}
-                    className="rounded-lg"
-                  />
-                </div>
-                <div>
-                  <Input
-                    prefix={<InstagramOutlined className="text-[#E4405F]" />}
-                    placeholder="Instagram link"
-                    value={socialLinks.instagram}
-                    onChange={(e) => setSocialLinks({ ...socialLinks, instagram: e.target.value })}
-                    className="rounded-lg"
-                  />
-                </div>
-                <div>
-                  <Input
-                    prefix={<GithubOutlined className="text-[#333]" />}
-                    placeholder="GitHub link"
-                    value={socialLinks.github}
-                    onChange={(e) => setSocialLinks({ ...socialLinks, github: e.target.value })}
-                    className="rounded-lg"
-                  />
-                </div>
-              </Flex>
-            </div>
           </div>
 
           <Button
@@ -213,7 +155,7 @@ const Profile = () => {
             onClick={handleUpdateUser}
             className="h-12 rounded-xl font-bold bg-blue-600 hover:bg-blue-700 shadow-lg border-none"
           >
-            {isLoading ? 'Yenilənir...' : 'Profili Yenilə'}
+            {isLoading ? 'Updating...' : 'Update Profile'}
           </Button>
         </Flex>
       </Card>
