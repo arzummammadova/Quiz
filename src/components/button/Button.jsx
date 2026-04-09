@@ -16,3 +16,4 @@ const Button = ({ children, type = "primary", htmlType = "submit", ...props }) =
 };
 
 export default Button;
+
