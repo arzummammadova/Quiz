@@ -1,23 +1,6 @@
 import { Button, Input } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import { 
-  Button, 
-  Input, 
-  Avatar, 
-  Flex, 
-  Card, 
-  Typography,
-  Divider
-} from 'antd'
-import { 
-  ArrowLeftOutlined, 
-  EditOutlined, 
-  SmileOutlined, 
-  MailOutlined,
-  LockOutlined
-} from '@ant-design/icons'
 import { Me, updateProfile } from '../../redux/features/authSlice'
 import { Avatar, Flex } from 'antd';
 import { FacebookOutlined, InstagramOutlined, UserOutlined } from '@ant-design/icons';
