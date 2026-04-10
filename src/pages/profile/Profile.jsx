@@ -29,7 +29,7 @@ const Profile = () => {
   const navigate = useNavigate();
   const { showToast } = useToast();
 
-  const [username, setUserName] = useState("arzush29");
+  const [username, setUserName] = useState("");
   const [bio, setBio] = useState("");
   const [password, setPassword] = useState("");
   const [socialLinks, setSocialLinks] = useState({
@@ -43,7 +43,7 @@ const Profile = () => {
 
   useEffect(() => {
     if (user) {
-      if (user.username) setUserName(user.username);
+      setUserName(user.username || "");
       setBio(user.bio || "");
       setSocialLinks({
         instagram: user.socialLinks?.instagram || "",
@@ -61,8 +61,8 @@ const Profile = () => {
     if (updateProfile.fulfilled.match(actionResult)) {
       showToast({
         type: 'success',
-        title: 'Success',
-        message: 'Profile updated successfully',
+        title: 'UĞURLU',
+        message: 'Profil məlumatları yeniləndi',
         duration: 4000,
         position: 'top-right',
       });
@@ -71,8 +71,8 @@ const Profile = () => {
     } else {
       showToast({
         type: 'error',
-        title: 'Error',
-        message: actionResult.payload || 'Update failed',
+        title: 'XƏTA',
+        message: actionResult.payload || 'Yenilənmə zamanı xəta baş verdi',
         duration: 4000,
         position: 'top-right',
       });
@@ -96,7 +96,7 @@ const Profile = () => {
             borderRadius: '14px'
           }}
         >
-          Back
+          GERİ
         </Button>
       </div>
 
@@ -121,18 +121,18 @@ const Profile = () => {
               />
             </div>
             <Title level={3} className="mt-2 mb-0 !font-black !text-gray-800 tracking-tight">
-              My Profile
+              PROFİLİM
             </Title>
-            <Text className="text-gray-400 font-medium">Update your account details</Text>
+            <Text className="text-gray-400 font-medium">Hesab məlumatlarını yeniləyin</Text>
           </div>
 
           <div className="flex flex-col gap-5 px-10">
             <div>
-              <label className="block mb-2 ml-4 text-[10px] font-black uppercase tracking-[0.15em] text-gray-400">Email Address</label>
+              <label className="block mb-2 ml-4 text-[10px] font-black uppercase tracking-[0.15em] text-gray-400">E-POÇT ÜNVANI</label>
               <Input 
                 size="large"
                 prefix={<MailOutlined className="text-pink-300" />}
-                value={user?.email || "arzuam-af106@code.edu.az"}
+                value={user?.email || ""}
                 disabled
                 className='rounded-full bg-gray-50 border-none h-12 text-gray-400 shadow-inner px-6'
               />
@@ -140,22 +140,22 @@ const Profile = () => {
 
             <Flex gap="large">
               <div className="flex-1">
-                <label className="block mb-2 ml-4 text-[10px] font-black uppercase tracking-[0.15em] text-pink-400">Nickname</label>
+                <label className="block mb-2 ml-4 text-[10px] font-black uppercase tracking-[0.15em] text-pink-400">İSTİFADƏÇİ ADI</label>
                 <Input
                   prefix={<EditOutlined className="text-pink-400" />}
                   size="large"
-                  placeholder="Enter new nickname"
+                  placeholder="Yeni istifadəçi adı daxil edin"
                   value={username}
                   onChange={(e) => setUserName(e.target.value)}
                   className="rounded-full border-2 border-pink-50 h-12 hover:border-pink-200 focus:border-pink-300 transition-all bg-white px-6 text-gray-700 shadow-sm font-bold"
                 />
               </div>
               <div className="flex-1">
-                <label className="block mb-2 ml-4 text-[10px] font-black uppercase tracking-[0.15em] text-purple-400">Password</label>
+                <label className="block mb-2 ml-4 text-[10px] font-black uppercase tracking-[0.15em] text-purple-400">ŞİFRƏ</label>
                 <Input.Password
                   prefix={<LockOutlined className="text-purple-400" />}
                   size="large"
-                  placeholder="Enter new password"
+                  placeholder="Yeni şifrə daxil edin"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="rounded-full border-2 border-purple-50 h-12 hover:border-purple-100 focus:border-purple-200 transition-all bg-white px-6 shadow-sm"
@@ -164,10 +164,10 @@ const Profile = () => {
             </Flex>
 
             <div>
-              <label className="block mb-2 ml-4 text-[10px] font-black uppercase tracking-[0.15em] text-cyan-500">About Me</label>
+              <label className="block mb-2 ml-4 text-[10px] font-black uppercase tracking-[0.15em] text-cyan-500">HAQQIMDA</label>
               <Input.TextArea
                 size="large"
-                placeholder="Tell us about yourself"
+                placeholder="Özünüz haqqında məlumat verin"
                 value={bio}
                 onChange={(e) => setBio(e.target.value)}
                 rows={3}
@@ -176,20 +176,20 @@ const Profile = () => {
             </div>
 
             <Divider className="!my-0 border-gray-100">
-              <span className="text-[10px] font-black text-gray-300 uppercase tracking-widest">Social Media</span>
+              <span className="text-[10px] font-black text-gray-300 uppercase tracking-widest">SOSİAL MEDİA</span>
             </Divider>
 
             <Flex gap="middle">
               <Input
                 prefix={<img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" alt="IG" style={{ width: 22 }} />}
-                placeholder="Instagram URL"
+                placeholder="INSTAGRAM URL"
                 value={socialLinks.instagram}
                 onChange={(e) => setSocialLinks({ ...socialLinks, instagram: e.target.value })}
                 className="rounded-full border-2 border-gray-50 hover:border-pink-200 bg-white shadow-sm h-12 px-5 flex-1"
               />
               <Input
                 prefix={<img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GH" style={{ width: 22 }} />}
-                placeholder="Github URL"
+                placeholder="GITHUB URL"
                 value={socialLinks.github}
                 onChange={(e) => setSocialLinks({ ...socialLinks, github: e.target.value })}
                 className="rounded-full border-2 border-gray-50 hover:border-purple-200 bg-white shadow-sm h-12 px-5 flex-1"
@@ -210,7 +210,7 @@ const Profile = () => {
                 border: 'none' 
               }}
             >
-              SAVE CHANGES
+              YADDA SAXLA
             </Button>
           </div>
         </Flex>
