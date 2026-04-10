@@ -1,3 +1,4 @@
+import { Button, Input } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
@@ -18,7 +19,12 @@ import {
   LockOutlined
 } from '@ant-design/icons'
 import { Me, updateProfile } from '../../redux/features/authSlice'
+import { Avatar, Flex } from 'antd';
+import { FacebookOutlined, InstagramOutlined, UserOutlined } from '@ant-design/icons';
 import { useToast } from 'arzu-toast-modal'
+import { useNavigate } from 'react-router-dom'
+import { Card, Typography } from 'antd'
+import { ArrowLeftOutlined, EditOutlined } from '@ant-design/icons'
 
 const { Title, Text } = Typography;
 

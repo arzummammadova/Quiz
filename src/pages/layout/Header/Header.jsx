@@ -22,7 +22,8 @@ const Header = () => {
         ml: `240px`,
         backgroundColor: '#16171d',
         boxShadow: 'none',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
+        borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+        zIndex: 1000
       }}
     >
       <Toolbar sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
