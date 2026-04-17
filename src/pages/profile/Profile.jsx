@@ -1,9 +1,9 @@
-import { Button, Input } from 'antd'
+import { Button, Divider, Input } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Me, updateProfile } from '../../redux/features/authSlice'
 import { Avatar, Flex } from 'antd';
-import { FacebookOutlined, InstagramOutlined, UserOutlined } from '@ant-design/icons';
+import { FacebookOutlined, InstagramOutlined, LockOutlined, MailOutlined, SmileOutlined, UserOutlined } from '@ant-design/icons';
 import { useToast } from 'arzu-toast-modal'
 import { useNavigate } from 'react-router-dom'
 import { Card, Typography } from 'antd'

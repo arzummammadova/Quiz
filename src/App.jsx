@@ -11,6 +11,7 @@ import VerifyEmail from './pages/verify-email/VerifyEmail'
 import Profile from './pages/profile/Profile'
 import CategoriesPage from './pages/Categories/CategoriesPage'
 import QuizPage from './pages/quiz/QuizPage'
+import AboutPage from './pages/about/AboutPage'
 
 function App() {
 
@@ -23,6 +24,7 @@ function App() {
           <Route index element={<OvewViewPage />} />
           <Route path="/quiz/:category" element={<CategoriesPage />} />
           <Route path="/quiz/questions" element={<QuizPage />} />
+          <Route path="/about" element={<AboutPage />} />
           {/* <Route path="/quiz/questions?category=:category&topic=:topic" element={<QuizPage />} /> */}
         </Route>
         <Route path='/login' element={<Login />} />
