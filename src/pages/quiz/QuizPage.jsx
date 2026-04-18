@@ -1,4 +1,4 @@
-import { Button, Modal } from 'antd';
+import { Button, Modal, Result } from 'antd';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useParams, useSearchParams } from 'react-router-dom'
@@ -137,22 +137,36 @@ const QuizPage = () => {
                 confirmLoading={modalLoading}
 
             >
-             {
-                modalLoading ?(<Spinner size="large" />):(
-                  <> {
-                    result && (
-                        <>
-                            {result.results.map((result, index) => (
-                                <p className={`${result.isCorrect} ? 'text-green-500' : 'text-red-500'`} key={index}>{result.isCorrect ? "Correct" : "Incorrect"}</p>
-                            ))}
-                            {/* <p>{result.results[0].correctOption}</p> */}
-                        </>
-                    )
-                }</> 
-                )   
-             }
+                {
+                    modalLoading ? (<Spinner size="large" />) : (
+                        <> {
+                            result && (
+                                <>
+                                    {result.results.map((result, index) => (
+                                        <p className={`${result.isCorrect} ? 'text-green-500' : 'text-red-500'`} key={index}>
 
-               
+
+                                            {result.isCorrect ? <Result
+                                                status="success"
+                                                title="Correct"
+
+
+                                            /> : <Result
+                                                status="error"
+                                                title="Incorrect"
+                                                />}
+
+
+                                        </p>
+                                    ))}
+                                    {/* <p>{result.results[0].correctOption}</p> */}
+                                </>
+                            )
+                        }</>
+                    )
+                }
+
+
 
             </Modal>
 

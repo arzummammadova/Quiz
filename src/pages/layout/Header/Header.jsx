@@ -26,6 +26,7 @@ const Header = () => {
         zIndex: 1000
       }}
     >
+      
       <Toolbar sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
         {user ? (
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
