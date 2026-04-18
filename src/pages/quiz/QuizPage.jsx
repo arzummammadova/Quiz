@@ -3,6 +3,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useParams, useSearchParams } from 'react-router-dom'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Spinner } from '@/components/ui/spinner';
 const QuizPage = () => {
     const [searchParams] = useSearchParams();
     const category = searchParams.get('category');
@@ -40,22 +41,36 @@ const QuizPage = () => {
     }, [])
 
     const handleCheckQuestion = async (question) => {
-        const res = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/quiz/check`,
-            {
+        setModalLoading(true);
 
-                answers: [
-                    {
-                        questionId: question._id,
-                        selectedOption: selectedAnswers[question._id]
 
-                    }
-                ]
+        try {
+            const res = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/quiz/check`,
+                {
 
-            },
-            { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
-        )
-        console.log(`res.data`, res.data.results);
-        setResult(res.data);
+                    answers: [
+                        {
+                            questionId: question._id,
+                            selectedOption: selectedAnswers[question._id]
+
+                        }
+                    ]
+
+                },
+                { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
+            )
+            console.log(`res.data`, res.data.results);
+            setResult(res.data);
+
+        }
+        catch (error) {
+            console.log(error);
+            toast.error(error.response.data.message);
+        }
+        finally {
+            setModalLoading(false);
+        }
+
 
     }
 
@@ -119,11 +134,12 @@ const QuizPage = () => {
                 open={isModalOpen}
                 onOk={handleOk}
                 onCancel={handleCancel}
+                confirmLoading={modalLoading}
 
             >
-
-
-                {
+             {
+                modalLoading ?(<Spinner size="large" />):(
+                  <> {
                     result && (
                         <>
                             {result.results.map((result, index) => (
@@ -132,7 +148,11 @@ const QuizPage = () => {
                             {/* <p>{result.results[0].correctOption}</p> */}
                         </>
                     )
-                }
+                }</> 
+                )   
+             }
+
+               
 
             </Modal>
 
