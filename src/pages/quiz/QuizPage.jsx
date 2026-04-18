@@ -2,19 +2,16 @@ import { Button, Modal } from 'antd';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useParams, useSearchParams } from 'react-router-dom'
-
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 const QuizPage = () => {
-
     const [searchParams] = useSearchParams();
     const category = searchParams.get('category');
     const topic = searchParams.get('topic');
-
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [result,setResult]=useState(null);
-    
+    const [result, setResult] = useState(null);
+    const [selectedAnswers, setSelectedAnswers] = useState({})
 
-
-    const showModal = () => {
+    const showModal = () => { 
         setIsModalOpen(true);
     };
 
@@ -41,43 +38,64 @@ const QuizPage = () => {
         getQuestions()
     }, [])
 
-    const handleCheckQuestion = (question) => {
-        const res = axios.post(`${import.meta.env.VITE_BASE_URL}/api/quiz/check`,
+    const handleCheckQuestion = async (question) => {
+        const res = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/quiz/check`,
             {
 
                 answers: [
                     {
                         questionId: question._id,
-                        selectedOption: question.options
+                        selectedOption: selectedAnswers[question._id]
+
                     }
                 ]
 
             },
             { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
         )
-        console.log(res.data);
+        console.log(`res.data`, res.data.results[0].isCorrect);
+        setResult(res.data);
 
     }
 
     return (
-        <div>
+        <div className='text-white'>
 
             <h1 className='text-4xl uppercase text-center mt-10 px-8' >Quiz</h1>
 
-
-
-            <div className='mx-auto px-7 py-8 border border-white-400 rounded-xl px-7 py-7'>
-                {
-                    questions.map((question) => (
-                        <div key={question._id}>
+            <Tabs defaultValue="account" className="w-full mx-auto px-4 py-7">
+                <TabsList>
+                    {
+                        questions.map((question,index) => (
+                            <TabsTrigger key={index} value={index}>{index+1}</TabsTrigger>
+                        ))
+                    }
+            
+                </TabsList>
+                <TabsContent value="password">Change your password here.</TabsContent>
+                 {
+                    questions.map((question,index) => (
+                        <TabsContent value={index}    key={question._id}>
 
                             <p>{question.question}</p>
+                            {/* {console.log(question.options)} */}
 
                             {
-                                question?.options?.map((option) => (
-                                    <div key={option} className='flex gap-5'>
-                                        <input type="radio" name="option" id="option" />
-                                        <label htmlFor="option">{option}</label>
+                                question?.options?.map((option, index) => (
+                                    <div key={index} className='flex gap-5'>
+                                        <input
+                                            type="radio"
+                                            name={`option-${question._id}`}
+                                            checked={selectedAnswers[question._id] === index + 1}
+                                            onChange={() => {
+                                                setSelectedAnswers(prev => ({
+                                                    ...prev,
+                                                    [question._id]: index + 1
+                                                }))
+                                            }}
+                                        />
+
+                                        <label htmlFor="option">{index + 1}.{option}</label>
                                     </div>
                                 ))
                             }
@@ -85,28 +103,34 @@ const QuizPage = () => {
 
                             <Button size="large" onClick={() => { handleCheckQuestion(question); showModal() }} className='mt-5'>Submit</Button>
 
-                        </div>
+                        </TabsContent>
                     ))
                 }
-            </div>
+
+                
+            </Tabs>
+
+
+
+         
             <Modal
-                title="Basic Modal"
+                title="Result"
                 closable={{ 'aria-label': 'Custom Close Button' }}
                 open={isModalOpen}
                 onOk={handleOk}
                 onCancel={handleCancel}
             >
-                
 
-                { 
-                    result  &&(
+
+                {
+                    result && (
                         <>
-                        <p>{result.isCorrect}</p>
-                        <p>{result.correctOption}</p>
+                            <p>{result.results[0].isCorrect ? "Correct" : "Incorrect"}</p>
+                            <p>{result.results[0].correctOption}</p>
                         </>
                     )
-                } 
-               
+                }
+
             </Modal>
 
 

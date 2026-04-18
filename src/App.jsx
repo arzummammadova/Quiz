@@ -12,6 +12,7 @@ import Profile from './pages/profile/Profile'
 import CategoriesPage from './pages/Categories/CategoriesPage'
 import QuizPage from './pages/quiz/QuizPage'
 import AboutPage from './pages/about/AboutPage'
+import CheckAuth from './helpers/checkAuth'
 
 function App() {
 
@@ -20,7 +21,7 @@ function App() {
 
       <Routes>
 
-        <Route path="/" element={<Layout />}>
+        <Route path="/"  element={<CheckAuth><Layout /></CheckAuth>}>
           <Route index element={<OvewViewPage />} />
           <Route path="/quiz/:category" element={<CategoriesPage />} />
           <Route path="/quiz/questions" element={<QuizPage />} />
@@ -31,7 +32,7 @@ function App() {
         <Route path='/register' element={<Register />} />
         <Route path='/verify-email' element={<VerifyEmail />} />
 
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/profile" element={<CheckAuth><Profile /></CheckAuth>} />
 
 
 
