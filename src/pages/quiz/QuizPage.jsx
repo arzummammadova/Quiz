@@ -10,8 +10,9 @@ const QuizPage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [result, setResult] = useState(null);
     const [selectedAnswers, setSelectedAnswers] = useState({})
+    const [modalLoading, setModalLoading] = useState(false)
 
-    const showModal = () => { 
+    const showModal = () => {
         setIsModalOpen(true);
     };
 
@@ -53,7 +54,7 @@ const QuizPage = () => {
             },
             { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
         )
-        console.log(`res.data`, res.data.results[0].isCorrect);
+        console.log(`res.data`, res.data.results);
         setResult(res.data);
 
     }
@@ -64,18 +65,17 @@ const QuizPage = () => {
             <h1 className='text-4xl uppercase text-center mt-10 px-8' >Quiz</h1>
 
             <Tabs defaultValue="account" className="w-full mx-auto px-4 py-7">
-                <TabsList>
+                <TabsList >
                     {
-                        questions.map((question,index) => (
-                            <TabsTrigger key={index} value={index}>{index+1}</TabsTrigger>
+                        questions.map((question, index) => (
+                            <TabsTrigger key={index} value={`q-${index}`}>{index + 1}</TabsTrigger>
                         ))
                     }
-            
+
                 </TabsList>
-                <TabsContent value="password">Change your password here.</TabsContent>
-                 {
-                    questions.map((question,index) => (
-                        <TabsContent value={index}    key={question._id}>
+                {
+                    questions.map((question, index) => (
+                        <TabsContent value={`q-${index}`} key={index}>
 
                             <p>{question.question}</p>
                             {/* {console.log(question.options)} */}
@@ -107,26 +107,29 @@ const QuizPage = () => {
                     ))
                 }
 
-                
+
             </Tabs>
 
 
 
-         
+
             <Modal
                 title="Result"
                 closable={{ 'aria-label': 'Custom Close Button' }}
                 open={isModalOpen}
                 onOk={handleOk}
                 onCancel={handleCancel}
+
             >
 
 
                 {
                     result && (
                         <>
-                            <p>{result.results[0].isCorrect ? "Correct" : "Incorrect"}</p>
-                            <p>{result.results[0].correctOption}</p>
+                            {result.results.map((result, index) => (
+                                <p className={`${result.isCorrect} ? 'text-green-500' : 'text-red-500'`} key={index}>{result.isCorrect ? "Correct" : "Incorrect"}</p>
+                            ))}
+                            {/* <p>{result.results[0].correctOption}</p> */}
                         </>
                     )
                 }
