@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { useParams, useSearchParams } from 'react-router-dom'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Spinner } from '@/components/ui/spinner';
+import { Toast } from 'arzu-toast-modal';
 const QuizPage = () => {
     const [searchParams] = useSearchParams();
     const category = searchParams.get('category');
@@ -11,7 +12,9 @@ const QuizPage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [result, setResult] = useState(null);
     const [selectedAnswers, setSelectedAnswers] = useState({})
-    const [modalLoading, setModalLoading] = useState(false)
+    const [modalLoading, setModalLoading] = useState(false);
+    const [activeTab,setActiveTab]=useState("q-0");
+
 
     const showModal = () => {
         setIsModalOpen(true);
@@ -40,7 +43,7 @@ const QuizPage = () => {
         getQuestions()
     }, [])
 
-    const handleCheckQuestion = async (question) => {
+    const handleCheckQuestion = async (question,index) => {
         setModalLoading(true);
 
 
@@ -62,10 +65,29 @@ const QuizPage = () => {
             console.log(`res.data`, res.data.results);
             setResult(res.data);
 
+            const isCorrect=res.data.results[0].isCorrect;
+            console.log(`isCorrect`, isCorrect);
+
+
+
+        if (isCorrect) {
+            // növbəti suala keç
+            const nextIndex = index + 1;
+
+            if (nextIndex < questions.length) {
+                setActiveTab(`q-${nextIndex}`);
+            }
+        }
+
+            
+
+            
+     
+
         }
         catch (error) {
             console.log(error);
-            toast.error(error.response.data.message);
+            Toast.error(error.response.data.message);
         }
         finally {
             setModalLoading(false);
@@ -79,7 +101,7 @@ const QuizPage = () => {
 
             <h1 className='text-4xl uppercase text-center mt-10 px-8' >Quiz</h1>
 
-            <Tabs defaultValue="account" className="w-full mx-auto px-4 py-7">
+            <Tabs  value={activeTab}  defaultValue={`q-${0}`} className="w-full mx-auto px-4 py-7">
                 <TabsList >
                     {
                         questions.map((question, index) => (
@@ -116,7 +138,7 @@ const QuizPage = () => {
                             }
 
 
-                            <Button size="large" onClick={() => { handleCheckQuestion(question); showModal() }} className='mt-5'>Submit</Button>
+                            <Button size="large" onClick={() => { handleCheckQuestion(question,index); showModal() }} className='mt-5'>Submit</Button>
 
                         </TabsContent>
                     ))

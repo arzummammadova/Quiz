@@ -1,4 +1,4 @@
-import { Button, Divider, Input } from 'antd'
+import { Button, Divider, Input, Statistic, Tag } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Me, updateProfile } from '../../redux/features/authSlice'
@@ -28,6 +28,7 @@ const Profile = () => {
 
   useEffect(() => {
     dispatch(Me());
+    console.log(user);
   }, [dispatch]);
 
   useEffect(() => {
@@ -45,6 +46,7 @@ const Profile = () => {
     const data = { username, bio, socialLinks };
     if (password) data.password = password;
 
+
     const actionResult = await dispatch(updateProfile(data));
 
     if (updateProfile.fulfilled.match(actionResult)) {
@@ -55,7 +57,7 @@ const Profile = () => {
         duration: 4000,
         position: 'top-right',
       });
-      setPassword(""); 
+      setPassword("");
       dispatch(Me());
     } else {
       showToast({
@@ -70,14 +72,14 @@ const Profile = () => {
 
   return (
     <div className='min-h-screen w-full flex flex-col items-center justify-center p-4 bg-[#16171d]'>
-      
+
       <div className="w-full max-w-[750px] mb-4 flex justify-start">
         <Button
           type="text"
           icon={<ArrowLeftOutlined />}
           onClick={() => navigate(-1)}
           className="text-white bg-transparent border-transparent hover:!bg-transparent hover:!border-white/40 px-6 flex items-center transition-all duration-300"
-          style={{ 
+          style={{
             color: 'white',
             borderWidth: '2px',
             borderStyle: 'solid',
@@ -92,12 +94,14 @@ const Profile = () => {
       <Card
         className='w-full max-w-[750px] rounded-[3.5rem] border-none shadow-2xl'
         style={{
-          background: '#fffdfa', 
+          background: '#fffdfa',
           padding: '10px'
         }}
       >
         <Flex vertical gap="middle" className="pt-2">
-          
+
+
+
           <div className="flex flex-col items-center relative py-2">
             <div className="absolute top-2 left-40 w-3 h-3 bg-pink-200 rounded-full"></div>
             <div className="absolute bottom-2 right-40 w-5 h-5 bg-cyan-100 rounded-full opacity-60"></div>
@@ -115,10 +119,21 @@ const Profile = () => {
             <Text className="text-gray-400 font-medium">Hesab məlumatlarını yeniləyin</Text>
           </div>
 
+
           <div className="flex flex-col gap-5 px-10">
+
+            <Statistic title="Your point" value={user?.points} />
+            <Tag
+              className='w-fit px-3 py-4 text-lg'
+              color={
+              user.level=="Intermediate"? "yellow" :"Beginner" ? "blue" :"red"
+              }
+            >
+              {user?.level}
+            </Tag>
             <div>
               <label className="block mb-2 ml-4 text-[10px] font-black uppercase tracking-[0.15em] text-gray-400">E-POÇT ÜNVANI</label>
-              <Input 
+              <Input
                 size="large"
                 prefix={<MailOutlined className="text-pink-300" />}
                 value={user?.email || ""}
@@ -194,9 +209,9 @@ const Profile = () => {
               loading={isLoading}
               onClick={handleUpdateUser}
               className="h-14 rounded-2xl font-black text-lg border-transparent"
-              style={{ 
+              style={{
                 color: 'white',
-                border: 'none' 
+                border: 'none'
               }}
             >
               YADDA SAXLA

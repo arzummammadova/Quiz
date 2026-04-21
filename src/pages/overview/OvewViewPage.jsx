@@ -19,11 +19,11 @@ const OvewViewPage = () => {
  
 
   return (
-    <div className='mx-auto h-screen flex items-center justify-center gap-10'>
-      <Card onClick={()=>{getCategories("backend")}} className='w-[500px] p-10 rounded-3xl shadow-lg  text-2xl font-bold uppercase text-center cursor-pointer hover:scale-105 transition-all duration-300'>
+    <div className=' mx-auto h-screen flex items-center justify-center gap-10'>
+      <Card style={{backgroundColor:'var(--background)',color:'var(--foreground)'}} hoverable onClick={()=>{getCategories("backend")}} className='w-[500px] p-10 rounded-3xl shadow-lg  text-2xl font-bold uppercase text-center cursor-pointer hover:scale-105 transition-all duration-300'>
         BackEnd
       </Card>
-      <Card onClick={()=>{getCategories("frontend")}} className='w-[500px] p-10 rounded-3xl shadow-lg text-2xl font-bold  uppercase text-center cursor-pointer hover:scale-105 transition-all duration-300'>
+      <Card style={{backgroundColor: 'var(--background)',color:'var(--foreground)'}} hoverable onClick={()=>{getCategories("frontend")}} className='w-[500px] p-10 rounded-3xl shadow-lg text-2xl font-bold  uppercase text-center cursor-pointer hover:scale-105 transition-all duration-300'>
         FrontEnd
       </Card>
     </div>

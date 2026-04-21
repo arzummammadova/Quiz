@@ -14,7 +14,8 @@ const Layout = () => {
           flexGrow: 1, 
           display: 'flex', 
           flexDirection: 'column',
-          backgroundColor: '#0f1014',
+          backgroundColor: 'var(--background)',
+          color: 'var(--foreground)',
           minHeight: '100vh'
         }}
       >
